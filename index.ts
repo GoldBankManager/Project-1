@@ -14,10 +14,11 @@ loadEnv({ path: ".env.local", quiet: true });
 const MODEL = "bytedance/seedance-2.5/text-to-video";
 
 async function main(): Promise<number> {
-  const credentials = process.env.HF_CREDENTIALS;
+  // HF_API_KEY is accepted as a fallback when it holds the combined key-id:key-secret.
+  const credentials = process.env.HF_CREDENTIALS || process.env.HF_API_KEY;
   if (!credentials || !credentials.includes(":")) {
     console.error(
-      "HF_CREDENTIALS is missing or not in key-id:key-secret format. Add it to .env.local.",
+      "HF_CREDENTIALS (or HF_API_KEY) is missing or not in key-id:key-secret format. Add it to .env.local.",
     );
     return 1;
   }
